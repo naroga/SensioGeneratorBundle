@@ -41,14 +41,23 @@ class ControllerGenerator extends Generator
             throw new \RuntimeException(sprintf('Controller "%s" already exists', $controller));
         }
 
+        $path = preg_split("/[\\\\|\/]/", $controller);
+        $namespacePath = '';
+
+        // concat the subfolders to the namespace
+        for ($i = 0; $i <= count($path) - 2; $i++) {
+            $namespacePath .= "\\" . $path[$i];
+        }
+
         $parameters = array(
-            'namespace'  => $bundle->getNamespace(),
+            'namespace'  => $bundle->getNamespace() . '\Controller' . $namespacePath,
+            'namespaceTest' => $bundle->getNamespace() . '\Tests\Controller' . $namespacePath,
             'bundle'     => $bundle->getName(),
             'format'     => array(
                 'routing'    => $routeFormat,
                 'templating' => $templateFormat,
             ),
-            'controller' => $controller,
+            'controller' => end($path),
         );
 
         foreach ($actions as $i => $action) {
