@@ -44,6 +44,10 @@ class ControllerGenerator extends Generator
         $path = preg_split("/[\\\\|\/]/", $controller);
         $namespacePath = implode("\\", array_slice($path, 0, count($path) - 1));
 
+        if ($namespacePath) {
+            $namespacePath = "\\" . $namespacePath;
+        }
+
         $parameters = array(
             'bundle'     => $bundle->getName(),
             'format'     => array(
@@ -76,8 +80,8 @@ class ControllerGenerator extends Generator
 
         $parameters['actions'] = $actions;
 
-        $controllerNamespacePath = $bundle->getNamespace()."\\Controller".($namespacePath ? "\\".$namespacePath : '');
-        $controllerTestNamespacePath = $bundle->getNamespace()."\\Tests\\Controller".($namespacePath ? "\\".$namespacePath : '');
+        $controllerNamespacePath = $bundle->getNamespace()."\\Controller".$namespacePath;
+        $controllerTestNamespacePath = $bundle->getNamespace()."\\Tests\\Controller".$namespacePath;
 
         $this->renderFile(
             'controller/Controller.php.twig',
