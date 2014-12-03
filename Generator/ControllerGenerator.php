@@ -42,12 +42,7 @@ class ControllerGenerator extends Generator
         }
 
         $path = preg_split("/[\\\\|\/]/", $controller);
-        $namespacePath = '';
-
-        // concat the subfolders to the namespace
-        for ($i = 0; $i <= count($path) - 2; $i++) {
-            $namespacePath .= "\\".$path[$i];
-        }
+        $namespacePath = implode("\\", array_slice($path, 0, count($path) - 1));
 
         $parameters = array(
             'namespace'  => $bundle->getNamespace().'\Controller'.$namespacePath,
