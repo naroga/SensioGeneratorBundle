@@ -45,8 +45,6 @@ class ControllerGenerator extends Generator
         $namespacePath = implode("\\", array_slice($path, 0, count($path) - 1));
 
         $parameters = array(
-            'namespace'  => $bundle->getNamespace().'\Controller'.$namespacePath,
-            'namespaceTest' => $bundle->getNamespace().'\Tests\Controller'.$namespacePath,
             'bundle'     => $bundle->getName(),
             'format'     => array(
                 'routing'    => $routeFormat,
@@ -78,8 +76,16 @@ class ControllerGenerator extends Generator
 
         $parameters['actions'] = $actions;
 
-        $this->renderFile('controller/Controller.php.twig', $controllerFile, $parameters);
-        $this->renderFile('controller/ControllerTest.php.twig', $dir.'/Tests/Controller/'.$controller.'ControllerTest.php', $parameters);
+        $this->renderFile(
+            'controller/Controller.php.twig',
+            $controllerFile,
+            $parameters + array("namespace" => $bundle->getNamespace().'\Controller'.$namespacePath)
+        );
+        $this->renderFile(
+            'controller/ControllerTest.php.twig',
+            $dir.'/Tests/Controller/'.$controller.'ControllerTest.php',
+            $parameters + array("namespace" => $bundle->getNamespace().'\Tests\Controller'.$namespacePath)
+        );
     }
 
     public function generateRouting(BundleInterface $bundle, $controller, array $action, $format)
