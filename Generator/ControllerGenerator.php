@@ -45,7 +45,7 @@ class ControllerGenerator extends Generator
         $namespacePath = implode("\\", array_slice($path, 0, count($path) - 1));
 
         if ($namespacePath) {
-            $namespacePath = "\\" . $namespacePath;
+            $namespacePath = "\\".$namespacePath;
         }
 
         $parameters = array(
