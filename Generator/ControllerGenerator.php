@@ -76,15 +76,18 @@ class ControllerGenerator extends Generator
 
         $parameters['actions'] = $actions;
 
+        $controllerNamespacePath = $bundle->getNamespace()."\\Controller".($namespacePath ? "\\".$namespacePath : '');
+        $controllerTestNamespacePath = $bundle->getNamespace()."\\Tests\\Controller".($namespacePath ? "\\".$namespacePath : '');
+
         $this->renderFile(
             'controller/Controller.php.twig',
             $controllerFile,
-            $parameters + array("namespace" => $bundle->getNamespace().'\Controller'.$namespacePath)
+            $parameters + array("namespace" => $controllerNamespacePath)
         );
         $this->renderFile(
             'controller/ControllerTest.php.twig',
             $dir.'/Tests/Controller/'.$controller.'ControllerTest.php',
-            $parameters + array("namespace" => $bundle->getNamespace().'\Tests\Controller'.$namespacePath)
+            $parameters + array("namespace" => $controllerTestNamespacePath)
         );
     }
 
